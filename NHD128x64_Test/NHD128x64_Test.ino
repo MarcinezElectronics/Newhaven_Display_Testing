@@ -43,7 +43,6 @@ U8G2_ST7565_64128N_F_4W_SW_SPI u8g2(U8G2_R0, /* clock=*/ 14, /* data=*/ 13, /* c
 
 char i = 0;
 
-
 void centerText(char* text1, char* text2, char* text3, char* text4, char* text5, char* text6, uint8_t lines) {
  
   u8g2.firstPage();
@@ -54,8 +53,7 @@ void centerText(char* text1, char* text2, char* text3, char* text4, char* text5,
     int16_t text4_width = u8g2.getStrWidth(text4);
     int16_t text5_width = u8g2.getStrWidth(text5);
     int16_t text6_width = u8g2.getStrWidth(text6);
-    //int16_t charHeight  = u8g2.getMaxCharHeight();
-    int16_t charHeight  = 10;
+    int16_t charHeight  = u8g2.getMaxCharHeight() - 3;
 
     u8g2.setCursor((SCREEN_WIDTH - text1_width) / 2, (((SCREEN_HEIGHT - (lines * charHeight))/2) + charHeight));
     u8g2.print(text1);
@@ -83,11 +81,25 @@ void setup() {
   u8g2.begin();
   u8g2.setFlipMode(1);
   u8g2.setContrast(150);
+  u8g2.setFont(u8g2_font_ncenB24_tf);
+   
+  String starS = "*";
+  char* starC = "";
+
+  for(i=0;i<7;i++){ 
+  
+  starC = const_cast<char*>(starS.c_str());
+   
+  centerText(starC, "", "", "", "", "", 1);
+  delay(1000);
+  starS += '*';
+  }
+     
   u8g2.setFont(u8g2_font_ncenB08_tf);
 }
 
 void loop() {
-
+  
   drawScreen(i);
   i++;
   if(i==21){i=0;}
@@ -108,7 +120,7 @@ void loop() {
 
 
 void drawScreen(char drawState){ 
-  //u8g2.setFont(u8g_font_courR08); //21 karakter fér ki egy sorba (6-os betűméret)
+  u8g2.setFont(u8g2_font_ncenB08_tf);
   u8g2.firstPage();
   do {
   switch(drawState){
